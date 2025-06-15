@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menopause History Summary Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    input, select, textarea { width: 100%; padding: 8px; margin: 5px 0 15px; }
+    label { font-weight: bold; }
+    button { padding: 10px 20px; font-size: 16px; }
+    .output { margin-top: 20px; padding: 15px; border: 1px solid #ccc; background: #f9f9f9; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Menopause History Summary Generator</h1>
+
+  <form id="menoForm">
+    <label>Age of Onset:</label>
+    <input type="number" id="ageOnset">
+
+    <label>Last Menstrual Period (LMP):</label>
+    <input type="text" id="lmp">
+
+    <label>Menstrual Pattern:</label>
+    <select id="menstrualPattern">
+      <option>Regular</option>
+      <option>Irregular</option>
+      <option>Amenorrhoea</option>
+    </select>
+
+    <label>Symptoms (tick if present):</label><br>
+    <input type="checkbox" id="hotFlushes"> Hot flushes<br>
+    <input type="checkbox" id="nightSweats"> Night sweats<br>
+    <input type="checkbox" id="vagDryness"> Vaginal dryness<br>
+    <input type="checkbox" id="dyspareunia"> Dyspareunia<br>
+    <input type="checkbox" id="mood"> Mood changes<br>
+    <input type="checkbox" id="libido"> Low libido<br>
+    <input type="checkbox" id="sleep"> Sleep disturbance<br>
+    <input type="checkbox" id="concentration"> Poor memory/concentration<br>
+    <input type="checkbox" id="aches"> Joint or muscle aches<br>
+
+    <label>Impact on Quality of Life:</label>
+    <select id="impact">
+      <option>Minimal</option>
+      <option>Moderate</option>
+      <option>Severe</option>
+    </select>
+
+    <label>Relevant PMH (tick if positive):</label><br>
+    <input type="checkbox" id="vte"> VTE<br>
+    <input type="checkbox" id="breastCa"> Breast cancer<br>
+    <input type="checkbox" id="cvd"> Cardiovascular disease<br>
+    <input type="checkbox" id="migraine"> Migraine<br>
+    <input type="checkbox" id="liver"> Liver disease<br>
+
+    <label>Hysterectomy:</label>
+    <select id="hysterectomy">
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+
+    <label>Discussion (tick all that apply):</label><br>
+    <input type="checkbox" id="risksBenefits"> HRT risks and benefits explained<br>
+    <input type="checkbox" id="nonHormonal"> Non-hormonal options discussed<br>
+    <input type="checkbox" id="lifestyle"> Lifestyle advice given<br>
+    <input type="checkbox" id="informedChoice"> Informed choice supported<br>
+
+    <label>Plan (tick any that apply):</label><br>
+    <input type="checkbox" id="trialSequential"> Trial HRT (Sequential)<br>
+    <input type="checkbox" id="trialContinuous"> Trial HRT (Continuous)<br>
+    <input type="checkbox" id="referClinic"> Refer to menopause clinic<br>
+    <input type="checkbox" id="investigate"> Further investigations<br>
+    <input type="checkbox" id="followUp"> Follow-up in 3 months<br>
+
+    <button type="button" onclick="generateSummary()">Generate Summary</button>
+  </form>
+
+  <div class="output" id="output"></div>
+
+  <script>
+    function generateSummary() {
+      const ageOnset = document.getElementById("ageOnset").value;
+      const lmp = document.getElementById("lmp").value;
+      const pattern = document.getElementById("menstrualPattern").value;
+      const impact = document.getElementById("impact").value;
+      const hysterectomy = document.getElementById("hysterectomy").value;
+
+      const symptoms = [
+        ["hotFlushes", "hot flushes"],
+        ["nightSweats", "night sweats"],
+        ["vagDryness", "vaginal dryness"],
+        ["dyspareunia", "dyspareunia"],
+        ["mood", "mood changes"],
+        ["libido", "low libido"],
+        ["sleep", "sleep disturbance"],
+        ["concentration", "poor memory/concentration"],
+        ["aches", "joint or muscle aches"]
+      ].filter(([id]) => document.getElementById(id).checked).map(([, text]) => text);
+
+      const pmh = [
+        ["vte", "VTE"],
+        ["breastCa", "breast cancer"],
+        ["cvd", "cardiovascular disease"],
+        ["migraine", "migraine"],
+        ["liver", "liver disease"]
+      ].filter(([id]) => document.getElementById(id).checked).map(([, text]) => text);
+
+      const discussion = [
+        ["risksBenefits", "HRT risks/benefits explained"],
+        ["nonHormonal", "non-hormonal options discussed"],
+        ["lifestyle", "lifestyle advice given"],
+        ["informedChoice", "informed choice supported"]
+      ].filter(([id]) => document.getElementById(id).checked).map(([, text]) => text);
+
+      const plan = [
+        ["trialSequential", "trial HRT (sequential)"],
+        ["trialContinuous", "trial HRT (continuous)"],
+        ["referClinic", "refer to menopause clinic"],
+        ["investigate", "further investigations"],
+        ["followUp", "follow-up in 3 months"]
+      ].filter(([id]) => document.getElementById(id).checked).map(([, text]) => text);
+
+      const summary = `Patient reports menopausal symptoms starting at age ${ageOnset}. Last menstrual period was ${lmp}. Menstrual pattern: ${pattern}.\n\nSymptoms: ${symptoms.join(", ") || "none reported"}.\nImpact on QoL: ${impact.toLowerCase()}.\nPMH: ${pmh.join(", ") || "none"}.\nHysterectomy status: ${hysterectomy}.\n\nDiscussion: ${discussion.join(", ") || "none"}.\nPlan: ${plan.join(", ") || "not specified"}.`;
+
+      document.getElementById("output").innerText = summary;
+    }
+  </script>
+</body>
+</html>
